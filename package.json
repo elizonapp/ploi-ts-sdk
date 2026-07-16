@@ -1,0 +1,58 @@
+{
+  "name": "@elizonapp/ploi-ts-sdk",
+  "version": "1.0.0",
+  "description": "TypeScript SDK for the Ploi.io API",
+  "license": "MIT",
+  "author": "elizon",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elizonapp/ploi-ts-sdk.git"
+  },
+  "homepage": "https://github.com/elizonapp/ploi-ts-sdk#readme",
+  "bugs": {
+    "url": "https://github.com/elizonapp/ploi-ts-sdk/issues"
+  },
+  "keywords": [
+    "ploi",
+    "ploi.io",
+    "sdk",
+    "api",
+    "typescript",
+    "server-management",
+    "deployment"
+  ],
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts --clean --sourcemap",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build",
+    "smoke": "npm run build && node scripts/smoke-models.mjs"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
+    "access": "restricted"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.30",
+    "tsup": "^8.5.0",
+    "typescript": "^5.8.3"
+  }
+}
