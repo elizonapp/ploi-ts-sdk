@@ -66,6 +66,15 @@ export class DatabaseUserResource extends Resource {
     return this.getPloi()!.makeAPICall(this.getEndpoint()!, 'delete');
   }
 
+  async attach(userId: number): Promise<ApiResponse<unknown>> {
+    this.setId(null);
+    this.buildEndpoint();
+
+    return this.getPloi()!.makeAPICall(`${this.getEndpoint()}/attach`, 'post', {
+      body: { user_id: userId },
+    });
+  }
+
   override async page(
     pageNumber = 1,
     amountPerPage?: number | null,

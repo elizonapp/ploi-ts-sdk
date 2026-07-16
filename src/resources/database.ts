@@ -44,22 +44,22 @@ export class DatabaseResource extends Resource {
 
   async create(
     name: string,
-    user: string,
-    password: string,
+    user?: string | null,
+    password?: string | null,
     description?: string | null,
     siteId?: number | null,
   ): Promise<ApiResponse<Database>> {
     this.setId(null);
     this.buildEndpoint();
 
+    const body: Record<string, unknown> = { name };
+    if (user != null) body.user = user;
+    if (password != null) body.password = password;
+    if (description != null) body.description = description;
+    if (siteId != null) body.site_id = siteId;
+
     const response = await this.getPloi()!.makeAPICall(this.getEndpoint()!, 'post', {
-      body: {
-        name,
-        user,
-        password,
-        description,
-        site_id: siteId,
-      },
+      body,
     }, Database);
     this.setId(response.getDataId());
 

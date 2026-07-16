@@ -38,7 +38,7 @@ export class NetworkRuleResource extends Resource {
 
   async create(
     name: string,
-    port: number,
+    port: number | string,
     type = 'tcp',
     fromIpAddress?: string | null,
     ruleType = 'allow',

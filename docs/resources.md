@@ -19,6 +19,9 @@ const resource: Resources.ServerResource = new Ploi(token).servers(1);
 | `user()` | `UserResource` |
 | `webserverTemplates(id?)` | `WebserverTemplateResource` |
 | `fileBackup(id?)` / `fileBackups(id?)` | `FileBackupResource` |
+| `databaseBackup(id?)` / `databaseBackups(id?)` | `DatabaseBackupResource` |
+| `synchronize()` | `SynchronizeResource` |
+| `teapot()` / `ips()` | utility GETs |
 
 ## Nested tree
 
@@ -27,11 +30,15 @@ servers(id)
 ├── sites(id)
 │   ├── redirects / certificates / queues / authUser / monitors
 │   ├── repository / deployment / environment / alias / fastCgi
-│   ├── robots / tenants / nginxConfiguration / app
+│   ├── robots / tenants / nginxConfiguration / app / wordpress
 ├── databases(id)
 │   ├── users / backups
+├── docker(id) / containers(id)
 ├── services(name) / cronjobs / networkRules / systemUsers
 ├── daemons / sshKeys / opcache / insights / loadBalancer
+
+scripts(id)
+├── schedules(id) / actions(id)
 ```
 
 ## Common patterns

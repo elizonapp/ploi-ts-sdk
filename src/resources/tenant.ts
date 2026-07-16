@@ -34,11 +34,12 @@ export class TenantResource extends Resource {
     tenant: string,
     webhook?: string | null,
     domains = '',
+    force?: boolean,
   ): Promise<ApiResponse<unknown>> {
     const url = `${this.getEndpoint()}/${tenant}/request-certificate`;
-    return this.getPloi()!.makeAPICall(url, 'post', {
-      body: { webhook, domains },
-    });
+    const body: Record<string, unknown> = { webhook, domains };
+    if (force != null) body.force = force;
+    return this.getPloi()!.makeAPICall(url, 'post', { body });
   }
 
   async revokeCertificate(tenant: string, webhook: string): Promise<ApiResponse<unknown>> {
@@ -46,5 +47,22 @@ export class TenantResource extends Resource {
     return this.getPloi()!.makeAPICall(url, 'post', {
       body: { webhook },
     });
+  }
+
+  async getNginxConfiguration(tenant: string): Promise<ApiResponse<unknown>> {
+    return this.getPloi()!.makeAPICall(
+      `${this.getEndpoint()}/${tenant}/nginx-configuration`,
+    );
+  }
+
+  async updateNginxConfiguration(
+    tenant: string,
+    content: string,
+  ): Promise<ApiResponse<unknown>> {
+    return this.getPloi()!.makeAPICall(
+      `${this.getEndpoint()}/${tenant}/nginx-configuration`,
+      'patch',
+      { body: { content } },
+    );
   }
 }

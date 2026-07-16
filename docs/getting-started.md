@@ -20,14 +20,19 @@ A GitHub PAT with `read:packages` is required.
 ```ts
 import { Ploi } from '@elizonapp/ploi-ts-sdk';
 
-const ploi = new Ploi(process.env.PLOI_API_TOKEN!);
+const ploi = new Ploi(process.env.PLOI_API_TOKEN!, {
+  userAgent: 'my-app',
+});
 // or
 const ploi2 = new Ploi();
 ploi2.setApiToken(process.env.PLOI_API_TOKEN!);
 ```
 
 API base URL: `https://ploi.io/api/`  
-Auth header: `Authorization: Bearer <token>`
+Auth header: `Authorization: Bearer <token>`  
+User-Agent: required by Ploi (defaults to `@elizonapp/ploi-ts-sdk/1.0.0`)
+
+Requests are queued through a reactive rate-limit pool (burst → 429 retry every 1s → burst). Disable with `{ rateLimitPool: false }`.
 
 ## First call
 

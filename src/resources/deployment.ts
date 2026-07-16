@@ -19,25 +19,46 @@ export class DeploymentResource extends Resource {
     return this;
   }
 
-  async deploy(): Promise<ApiResponse<DeployResult>> {
-    this.setEndpoint(`${this.getEndpoint()}/deploy`);
-    return this.getPloi()!.makeAPICall(this.getEndpoint()!, 'post', {}, DeployResult);
+  async deploy(options: {
+    scheduled?: string;
+    variables?: Record<string, string | number | boolean>;
+  } = {}): Promise<ApiResponse<DeployResult>> {
+    const body: Record<string, unknown> = {};
+    if (options.scheduled != null) body.scheduled = options.scheduled;
+    if (options.variables != null) body.variables = options.variables;
+
+    return this.getPloi()!.makeAPICall(
+      `${this.getEndpoint()}/deploy`,
+      'post',
+      Object.keys(body).length ? { body } : {},
+      DeployResult,
+    );
   }
 
   async deployToProduction(): Promise<ApiResponse<DeployResult>> {
-    this.setEndpoint(`${this.getEndpoint()}/deploy-to-production`);
-    return this.getPloi()!.makeAPICall(this.getEndpoint()!, 'post', {}, DeployResult);
+    return this.getPloi()!.makeAPICall(
+      `${this.getEndpoint()}/deploy-to-production`,
+      'post',
+      {},
+      DeployResult,
+    );
   }
 
   async deployScript(): Promise<ApiResponse<DeployScript>> {
-    this.setEndpoint(`${this.getEndpoint()}/deploy/script`);
-    return this.getPloi()!.makeAPICall(this.getEndpoint()!, 'get', {}, DeployScript);
+    return this.getPloi()!.makeAPICall(
+      `${this.getEndpoint()}/deploy/script`,
+      'get',
+      {},
+      DeployScript,
+    );
   }
 
   async updateDeployScript(script = ''): Promise<ApiResponse<DeployScript>> {
-    this.setEndpoint(`${this.getEndpoint()}/deploy/script`);
-    return this.getPloi()!.makeAPICall(this.getEndpoint()!, 'patch', {
-      body: { deploy_script: script },
-    }, DeployScript);
+    return this.getPloi()!.makeAPICall(
+      `${this.getEndpoint()}/deploy/script`,
+      'patch',
+      { body: { deploy_script: script } },
+      DeployScript,
+    );
   }
 }

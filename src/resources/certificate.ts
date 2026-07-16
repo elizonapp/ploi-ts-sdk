@@ -42,12 +42,20 @@ export class CertificateResource extends Resource {
     certificate: string,
     type = 'letsencrypt',
     force = false,
+    options: {
+      private?: string;
+      additional?: Record<string, unknown>;
+    } = {},
   ): Promise<ApiResponse<Certificate>> {
     this.setId(null);
     this.buildEndpoint();
 
+    const body: Record<string, unknown> = { certificate, type, force };
+    if (options.private != null) body.private = options.private;
+    if (options.additional != null) body.additional = options.additional;
+
     const response = await this.getPloi()!.makeAPICall(this.getEndpoint()!, 'post', {
-      body: { certificate, type, force },
+      body,
     }, Certificate);
     this.setId(response.getDataId());
 

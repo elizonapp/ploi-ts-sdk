@@ -1,0 +1,223 @@
+{
+  "summary": {
+    "docPages": 221,
+    "docEndpoints": 221,
+    "noCurlPages": 0,
+    "sdkEndpoints": 225,
+    "matched": 201,
+    "missing": 20,
+    "broken": 0,
+    "extraSdk": 25
+  },
+  "missing": [
+    {
+      "page": "user/show-source-control-providers",
+      "docKey": "GET /user/source-control/1"
+    },
+    {
+      "page": "user/repositories-for-source-control-providers",
+      "docKey": "GET /user/source-control/1/repositories"
+    },
+    {
+      "page": "load-balancers/request-certificate-for-domain",
+      "docKey": "POST /servers/{id}/load-balancer/mydomain.com/request-certificate"
+    },
+    {
+      "page": "load-balancers/revoke-certificate-for-domain",
+      "docKey": "DELETE /servers/{id}/load-balancer/mydomain.com/revoke-certificate"
+    },
+    {
+      "page": "sites/laravel-horizon-statistics",
+      "docKey": "GET /servers/{id}/sites/laravel/horizon"
+    },
+    {
+      "page": "aliases/delete-alias",
+      "docKey": "DELETE /servers/{id}/sites/{id}/aliases/fourth-alias.com"
+    },
+    {
+      "page": "tenants/delete-tenant",
+      "docKey": "DELETE /servers/{id}/sites/{id}/tenants/example.com"
+    },
+    {
+      "page": "tenants/request-certificate",
+      "docKey": "POST /servers/{id}/sites/{id}/tenants/example.com/request-certificate"
+    },
+    {
+      "page": "tenants/delete-certificate",
+      "docKey": "POST /servers/{id}/sites/{id}/tenants/example.com/revoke-certificate"
+    },
+    {
+      "page": "tenants/get-nginx-configuration-tenant",
+      "docKey": "GET /servers/{id}/sites/{id}/tenants/example.com/nginx-configuration"
+    },
+    {
+      "page": "tenants/update-nginx-configuration-tenant",
+      "docKey": "PATCH /servers/{id}/sites/{id}/tenants/example.com/nginx-configuration"
+    },
+    {
+      "page": "containers/get-container",
+      "docKey": "GET /servers/{id}/docker/containers/1"
+    },
+    {
+      "page": "containers/update-container",
+      "docKey": "PATCH /servers/{id}/docker/containers/1"
+    },
+    {
+      "page": "containers/delete-container",
+      "docKey": "DELETE /servers/{id}/docker/containers/1"
+    },
+    {
+      "page": "containers/link-site",
+      "docKey": "POST /servers/123/docker/containers/456/site/link"
+    },
+    {
+      "page": "containers/unlink-site",
+      "docKey": "DELETE /servers/123/docker/containers/456/site/unlink"
+    },
+    {
+      "page": "site/get-site-file-backup",
+      "docKey": "GET /backups/file/1"
+    },
+    {
+      "page": "site/update-site-file-backup",
+      "docKey": "PATCH /backups/file/1"
+    },
+    {
+      "page": "site/run-site-file-backup",
+      "docKey": "POST /backups/file/1/run"
+    },
+    {
+      "page": "site/delete-site-file-backup",
+      "docKey": "DELETE /backups/file/1"
+    }
+  ],
+  "broken": [],
+  "noCurl": [],
+  "unmatchedSdk": [
+    {
+      "m": "GET",
+      "p": "user/source-control/{id}",
+      "loc": "UserResource.sourceControl(id)"
+    },
+    {
+      "m": "GET",
+      "p": "user/source-control/{id}/repositories",
+      "loc": "UserResource.sourceControlRepositories(id)"
+    },
+    {
+      "m": "POST",
+      "p": "servers/custom/{id}/start",
+      "loc": "ServerResource.startInstallation()"
+    },
+    {
+      "m": "POST",
+      "p": "servers/{id}/load-balancer/{id}/request-certificate",
+      "loc": "LoadBalancerResource.requestCertificate()"
+    },
+    {
+      "m": "DELETE",
+      "p": "servers/{id}/load-balancer/{id}/revoke-certificate",
+      "loc": "LoadBalancerResource.revokeCertificate()"
+    },
+    {
+      "m": "GET",
+      "p": "servers/{id}/sites/{id}/laravel/horizon/{id}",
+      "loc": "SiteResource.horizonStatistics(type)"
+    },
+    {
+      "m": "DELETE",
+      "p": "servers/{id}/sites/{id}/aliases/{id}",
+      "loc": "AliasResource.delete()"
+    },
+    {
+      "m": "DELETE",
+      "p": "servers/{id}/sites/{id}/tenants/{id}",
+      "loc": "TenantResource.delete()"
+    },
+    {
+      "m": "POST",
+      "p": "servers/{id}/sites/{id}/tenants/{id}/request-certificate",
+      "loc": "TenantResource.requestCertificate()"
+    },
+    {
+      "m": "POST",
+      "p": "servers/{id}/sites/{id}/tenants/{id}/revoke-certificate",
+      "loc": "TenantResource.revokeCertificate()"
+    },
+    {
+      "m": "GET",
+      "p": "servers/{id}/sites/{id}/tenants/{id}/nginx-configuration",
+      "loc": "TenantResource.getNginxConfiguration()"
+    },
+    {
+      "m": "PATCH",
+      "p": "servers/{id}/sites/{id}/tenants/{id}/nginx-configuration",
+      "loc": "TenantResource.updateNginxConfiguration()"
+    },
+    {
+      "m": "POST",
+      "p": "servers/{id}/sites/{id}/wordpress/themes/deactivate",
+      "loc": "WordpressResource.deactivateTheme()"
+    },
+    {
+      "m": "GET",
+      "p": "servers/{id}/docker/containers/{id}",
+      "loc": "DockerContainerResource.get(id)"
+    },
+    {
+      "m": "PATCH",
+      "p": "servers/{id}/docker/containers/{id}",
+      "loc": "DockerContainerResource.update()"
+    },
+    {
+      "m": "DELETE",
+      "p": "servers/{id}/docker/containers/{id}",
+      "loc": "DockerContainerResource.delete()"
+    },
+    {
+      "m": "POST",
+      "p": "servers/{id}/docker/containers/{id}/site/link",
+      "loc": "DockerContainerResource.linkSite()"
+    },
+    {
+      "m": "DELETE",
+      "p": "servers/{id}/docker/containers/{id}/site/unlink",
+      "loc": "DockerContainerResource.unlinkSite()"
+    },
+    {
+      "m": "GET",
+      "p": "backups/file/{id}",
+      "loc": "FileBackupResource.get(id)"
+    },
+    {
+      "m": "PATCH",
+      "p": "backups/file/{id}",
+      "loc": "FileBackupResource.update()"
+    },
+    {
+      "m": "POST",
+      "p": "backups/file/{id}/run",
+      "loc": "FileBackupResource.run()"
+    },
+    {
+      "m": "DELETE",
+      "p": "backups/file/{id}",
+      "loc": "FileBackupResource.delete()"
+    },
+    {
+      "m": "GET",
+      "p": "user/statistics",
+      "loc": "UserResource.statistics()"
+    },
+    {
+      "m": "GET",
+      "p": "synchronize/servers",
+      "loc": "SynchronizeResource.servers()"
+    },
+    {
+      "m": "PATCH",
+      "p": "backups/database/{id}/toggle",
+      "loc": "DatabaseBackupResource.toggle()"
+    }
+  ]
+}

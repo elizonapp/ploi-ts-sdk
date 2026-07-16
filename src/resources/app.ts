@@ -43,20 +43,30 @@ export class AppResource extends Resource {
    */
   async install(
     type = 'wordpress',
-    options: Record<string, unknown> = {},
+    options: {
+      create_database?: boolean;
+      type?: string;
+      provider?: string;
+      name?: string;
+      private?: boolean;
+      description?: string;
+      installation_type?: string;
+      [key: string]: unknown;
+    } = {},
   ): Promise<unknown> {
     this.setId(null);
     this.buildEndpoint();
+
+    const body: Record<string, unknown> = { ...options };
+    if (body.create_database === undefined && type !== 'statamic') {
+      body.create_database = false;
+    }
 
     try {
       const response = await this.getPloi()!.makeAPICall(
         `${this.getEndpoint()}/${type}`,
         'post',
-        {
-          body: {
-            create_database: options.create_database ?? false,
-          },
-        },
+        { body },
       );
 
       this.setId(response.getDataId());

@@ -25,7 +25,9 @@ Token needs `read:packages`.
 ```ts
 import { Ploi, Server, Site } from '@elizonapp/ploi-ts-sdk';
 
-const ploi = new Ploi(process.env.PLOI_API_TOKEN!);
+const ploi = new Ploi(process.env.PLOI_API_TOKEN!, {
+  userAgent: 'my-app', // required by Ploi; default is package name
+});
 
 const servers: Server[] = (await ploi.servers().get()).getData();
 console.log(servers.map((s) => `${s.id} ${s.name} ${s.ipAddress}`));
@@ -34,6 +36,17 @@ const site: Site = (await ploi.servers(1).sites(2).get()).getData();
 console.log(site.domain, site.phpVersion);
 
 await ploi.servers(1).sites(2).deployment().deploy();
+```
+
+### Rate-limit pool
+
+By default every API call goes through a reactive pool: requests burst in parallel; on HTTP 429 the failed call is retried every 1s, then the remaining queue bursts again.
+
+```ts
+new Ploi(token, {
+  rateLimitPool: true,              // default
+  rateLimitRetryIntervalMs: 1000,   // default
+});
 ```
 
 ## Documentation

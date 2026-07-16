@@ -21,18 +21,19 @@ export class OpcacheResource extends Resource {
     return this;
   }
 
+  private baseEndpoint(): string {
+    return `${this.getServer().getEndpoint()}/${this.getServer().getId()}`;
+  }
+
   async refresh(): Promise<ApiResponse<unknown>> {
-    this.setEndpoint(`${this.getEndpoint()}/refresh-opcache`);
-    return this.getPloi()!.makeAPICall(this.getEndpoint()!, 'post');
+    return this.getPloi()!.makeAPICall(`${this.baseEndpoint()}/refresh-opcache`, 'post');
   }
 
   async enable(): Promise<ApiResponse<unknown>> {
-    this.setEndpoint(`${this.getEndpoint()}/enable-opcache`);
-    return this.getPloi()!.makeAPICall(this.getEndpoint()!, 'post');
+    return this.getPloi()!.makeAPICall(`${this.baseEndpoint()}/enable-opcache`, 'post');
   }
 
   async disable(): Promise<ApiResponse<unknown>> {
-    this.setEndpoint(`${this.getEndpoint()}/disable-opcache`);
-    return this.getPloi()!.makeAPICall(this.getEndpoint()!, 'post');
+    return this.getPloi()!.makeAPICall(`${this.baseEndpoint()}/disable-opcache`, 'delete');
   }
 }

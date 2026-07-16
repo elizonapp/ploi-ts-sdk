@@ -47,6 +47,12 @@ export class MonitorsResource extends Resource {
     return this.getPloi()!.makeAPICall(`${this.getEndpoint()}/uptime-responses`);
   }
 
+  async delete(id?: number | null): Promise<ApiResponse<unknown>> {
+    this.setIdOrFail(id);
+    this.buildEndpoint();
+    return this.getPloi()!.makeAPICall(this.getEndpoint()!, 'delete');
+  }
+
   override async page(
     pageNumber = 1,
     amountPerPage?: number | null,

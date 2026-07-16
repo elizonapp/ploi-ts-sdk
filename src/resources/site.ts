@@ -1,6 +1,7 @@
 import { ApiResponse, listOf } from '../http/response';
 import { RequiresId } from '../exceptions/resource/requires-id';
 import { Site } from '../models/site';
+import { SiteLog } from '../models/site-log';
 import { Resource } from './resource';
 import type { ServerResource } from './server';
 import { RedirectResource } from './redirect';
@@ -17,6 +18,7 @@ import { RobotResource } from './robot';
 import { TenantResource } from './tenant';
 import { MonitorsResource } from './monitors';
 import { NginxConfigurationResource } from './nginx-configuration';
+import { WordpressResource } from './wordpress';
 
 export class SiteResource extends Resource {
 
@@ -81,13 +83,28 @@ export class SiteResource extends Resource {
     return response;
   }
 
-  async update(rootDomain: string): Promise<ApiResponse<Site>> {
+  async update(
+    rootDomainOrOptions?:
+      | string
+      | {
+          root_domain?: string;
+          zero_downtime_deployment?: boolean;
+          disable_robots?: boolean;
+        },
+    options: {
+      zero_downtime_deployment?: boolean;
+      disable_robots?: boolean;
+    } = {},
+  ): Promise<ApiResponse<Site>> {
     this.setIdOrFail();
     this.buildEndpoint();
 
-    return this.getPloi()!.makeAPICall(this.getEndpoint()!, 'patch', {
-      body: { root_domain: rootDomain },
-    }, Site);
+    const body: Record<string, unknown> =
+      typeof rootDomainOrOptions === 'string'
+        ? { root_domain: rootDomainOrOptions, ...options }
+        : { ...(rootDomainOrOptions ?? {}), ...options };
+
+    return this.getPloi()!.makeAPICall(this.getEndpoint()!, 'patch', { body }, Site);
   }
 
   async delete(id?: number | null): Promise<ApiResponse<unknown>> {
@@ -100,18 +117,46 @@ export class SiteResource extends Resource {
     return this.getPloi()!.makeAPICall(this.getEndpoint()!, 'delete');
   }
 
-  async logs(id?: number | null): Promise<ApiResponse<unknown>> {
-    if (id) {
-      this.setId(id);
+  /** List site logs (paginated). */
+  logs(): Promise<ApiResponse<SiteLog[]>>;
+  /** Get a single log entry (site ID must already be set). */
+  logs(logId: number): Promise<ApiResponse<SiteLog>>;
+  /** Set site ID and get a single log entry. */
+  logs(siteId: number, logId: number): Promise<ApiResponse<SiteLog>>;
+  async logs(
+    siteIdOrLogId?: number | null,
+    logId?: number | null,
+  ): Promise<ApiResponse<SiteLog | SiteLog[]>> {
+    if (logId != null) {
+      if (siteIdOrLogId != null) {
+        this.setId(siteIdOrLogId);
+      }
     }
 
     if (!this.getId()) {
       throw new RequiresId('No Site ID set');
     }
 
-    this.setEndpoint(`${this.buildEndpoint().getEndpoint()}/log`);
+    this.buildEndpoint();
+    const url = `${this.getEndpoint()}/log`;
 
-    return this.getPloi()!.makeAPICall(this.getEndpoint()!);
+    // logs(logId) when site already set
+    if (logId == null && siteIdOrLogId != null) {
+      return this.getPloi()!.makeAPICall(
+        `${url}/${siteIdOrLogId}`,
+        'get',
+        {},
+        SiteLog,
+      );
+    }
+
+    // logs(siteId, logId)
+    if (logId != null) {
+      return this.getPloi()!.makeAPICall(`${url}/${logId}`, 'get', {}, SiteLog);
+    }
+
+    // logs() → list
+    return this.getPloi()!.makeAPICall(url, 'get', {}, listOf(SiteLog));
   }
 
   async phpVersion(version: string | number = '7.4'): Promise<ApiResponse<Site>> {
@@ -282,5 +327,9 @@ export class SiteResource extends Resource {
 
   nginxConfiguration(): NginxConfigurationResource {
     return new NginxConfigurationResource(this);
+  }
+
+  wordpress(): WordpressResource {
+    return new WordpressResource(this);
   }
 }

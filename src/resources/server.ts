@@ -15,6 +15,7 @@ import { SshKeyResource } from './ssh-key';
 import { OpcacheResource } from './opcache';
 import { InsightResource } from './insight';
 import { LoadBalancerResource } from './load-balancer';
+import { DockerContainerResource } from './docker-container';
 
 export class ServerResource extends Resource {
   private readonly resourcePath = 'servers';
@@ -70,6 +71,20 @@ export class ServerResource extends Resource {
     return this.callApi(null, 'delete');
   }
 
+  async update(
+    name: string,
+    options: { ip?: string; ssh_port?: number | string } = {},
+  ): Promise<ApiResponse<Server>> {
+    this.setIdOrFail();
+    return this.callApi(null, 'patch', {
+      body: { name, ...options },
+    }, Server);
+  }
+
+  async monitored(): Promise<ApiResponse<unknown>> {
+    return this.api('servers/monitored');
+  }
+
   async logs(id?: number | null): Promise<ApiResponse<ServerLog[]>> {
     this.setIdOrFail(id);
     return this.callApi('logs', 'get', {}, listOf(ServerLog));
@@ -107,13 +122,23 @@ export class ServerResource extends Resource {
 
   async createCustom(
     ip: string,
-    options: Record<string, unknown> = {},
+    options: {
+      type?: string;
+      ssh_port?: number;
+      database_type?: string;
+      php_version?: string;
+      name?: string;
+      os_type?: string;
+      description?: string;
+      [key: string]: unknown;
+    } = {},
   ): Promise<ApiResponse<Server>> {
     this.setId(null);
 
     const defaults = {
       ip,
       type: 'server',
+      ssh_port: 22,
       database_type: 'mysql',
       php_version: '7.4',
     };
@@ -128,7 +153,10 @@ export class ServerResource extends Resource {
     return response;
   }
 
-  async startInstallation(url?: string | null): Promise<ApiResponse<unknown>> {
+  async startInstallation(
+    url?: string | null,
+    options: { install_monitoring?: boolean; webhook_url?: string } = {},
+  ): Promise<ApiResponse<unknown>> {
     const id = this.getId();
 
     if (!url && !id) {
@@ -138,7 +166,11 @@ export class ServerResource extends Resource {
     }
 
     const endpoint = url ?? `servers/custom/${id}/start`;
-    return this.api(endpoint, 'post');
+    const body =
+      options.install_monitoring != null || options.webhook_url != null
+        ? options
+        : undefined;
+    return this.api(endpoint, 'post', body ? { body } : undefined);
   }
 
   /** @deprecated Prefer `server().opcache().refresh()`. */
@@ -182,6 +214,36 @@ export class ServerResource extends Resource {
   async monitoring(id?: number | null): Promise<ApiResponse<unknown>> {
     this.setIdOrFail(id);
     return this.callApi('monitor');
+  }
+
+  async installWpCli(): Promise<ApiResponse<unknown>> {
+    this.setIdOrFail();
+    return this.callApi('install/wp-cli', 'post');
+  }
+
+  /** @alias installWpCli — PHP SDK naming */
+  async installWordPressCli(): Promise<ApiResponse<unknown>> {
+    return this.installWpCli();
+  }
+
+  async uninstallWpCli(): Promise<ApiResponse<unknown>> {
+    this.setIdOrFail();
+    return this.callApi('uninstall/wp-cli', 'delete');
+  }
+
+  /** @alias uninstallWpCli — PHP SDK naming */
+  async uninstallWordPressCli(): Promise<ApiResponse<unknown>> {
+    return this.uninstallWpCli();
+  }
+
+  async runWpCli(command: string): Promise<ApiResponse<unknown>> {
+    this.setIdOrFail();
+    return this.callApi('wp-cli/run', 'post', { body: { command } });
+  }
+
+  /** @alias runWpCli — PHP SDK naming */
+  async runWordPressCli(command: string): Promise<ApiResponse<unknown>> {
+    return this.runWpCli(command);
   }
 
   override async page(
@@ -237,5 +299,13 @@ export class ServerResource extends Resource {
 
   loadBalancer(): LoadBalancerResource {
     return new LoadBalancerResource(this);
+  }
+
+  docker(id?: number | null): DockerContainerResource {
+    return new DockerContainerResource(this, id);
+  }
+
+  containers(id?: number | null): DockerContainerResource {
+    return this.docker(id);
   }
 }

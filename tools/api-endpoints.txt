@@ -1,0 +1,2 @@
+﻿GET /servers/{server}/sites/{id}/queues
+GET /servers/{server}/sites/{site}/aliases

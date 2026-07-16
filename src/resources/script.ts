@@ -3,6 +3,8 @@ import { ApiResponse, listOf } from '../http/response';
 import { RequiresId } from '../exceptions/resource/requires-id';
 import { Script } from '../models/script';
 import { Resource } from './resource';
+import { ScriptScheduleResource } from './script-schedule';
+import { ScriptActionResource } from './script-action';
 
 export class ScriptResource extends Resource {
   private readonly resourcePath = 'scripts';
@@ -42,6 +44,15 @@ export class ScriptResource extends Resource {
     return response;
   }
 
+  async update(label: string, user: string, content: string): Promise<ApiResponse<Script>> {
+    this.setIdOrFail();
+    this.setEndpoint(`${this.resourcePath}/${this.getId()}`);
+
+    return this.getPloi()!.makeAPICall(this.getEndpoint()!, 'patch', {
+      body: { label, user, content },
+    }, Script);
+  }
+
   async delete(id?: number | null): Promise<ApiResponse<unknown>> {
     this.setIdOrFail(id);
     this.setEndpoint(`${this.resourcePath}/${this.getId()}`);
@@ -61,6 +72,16 @@ export class ScriptResource extends Resource {
     return this.getPloi()!.makeAPICall(this.getEndpoint()!, 'post', {
       body: { servers: serverIds },
     });
+  }
+
+  schedules(id?: number | null): ScriptScheduleResource {
+    this.setIdOrFail();
+    return new ScriptScheduleResource(this, id);
+  }
+
+  actions(id?: number | null): ScriptActionResource {
+    this.setIdOrFail();
+    return new ScriptActionResource(this, id);
   }
 
   override async page(

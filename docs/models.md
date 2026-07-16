@@ -66,8 +66,15 @@ List endpoints attach `listOf(Model)` so `getData()` returns `Model[]`.
 | `Monitor` | `monitors().get()` |
 | `Insight` | `insights().get()` |
 | `ServerLog` | `servers(id).logs()` |
+| `SiteLog` | `sites(id).logs()` / `sites(id).logs(logId)` |
 | `FileBackup` | `fileBackups().get()` |
-| `DatabaseBackup` | `databases(id).backups().get()` |
+| `DatabaseBackup` | `databases(id).backups().get()` / `databaseBackups().get()` |
+| `DockerContainer` | `servers(id).docker().get()` |
+| `ScriptSchedule` | `scripts(id).schedules().get()` |
+| `ScriptAction` | `scripts(id).actions().get()` |
+| `SourceControlProvider` | `user().sourceControl()` |
+| `BackupConfiguration` | `user().backupConfigurations()` |
+| `WordpressPlugin` / `WordpressTheme` / `WordpressRepository` | `sites(id).wordpress()` |
 
 Some action endpoints return `ApiResponse<unknown>` (restart, opcache toggle, …) when the API has no stable entity shape.
 

@@ -52,4 +52,18 @@ export class ServiceResource extends Resource {
 
     return this.getPloi()!.makeAPICall(`${this.getEndpoint()}/restart`, 'post');
   }
+
+  async reload(serviceName?: string | null): Promise<ApiResponse<unknown>> {
+    if (serviceName) {
+      this.setServiceName(serviceName);
+    }
+
+    if (!this.getServiceName()) {
+      throw new RequiresServiceName();
+    }
+
+    this.buildEndpoint();
+
+    return this.getPloi()!.makeAPICall(`${this.getEndpoint()}/reload`, 'post');
+  }
 }

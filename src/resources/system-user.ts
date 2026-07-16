@@ -36,12 +36,16 @@ export class SystemUserResource extends Resource {
       : this.getPloi()!.makeAPICall(this.getEndpoint()!, 'get', {}, SystemUser);
   }
 
-  async create(name: string, sudo = false): Promise<ApiResponse<SystemUser>> {
+  async create(
+    name: string,
+    sudo = false,
+    receivePassword = false,
+  ): Promise<ApiResponse<SystemUser>> {
     this.setId(null);
     this.buildEndpoint();
 
     const response = await this.getPloi()!.makeAPICall(this.getEndpoint()!, 'post', {
-      body: { name, sudo },
+      body: { name, sudo, receive_password: receivePassword },
     }, SystemUser);
     this.setId(response.getDataId());
 

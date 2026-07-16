@@ -1,6 +1,6 @@
 {
   "name": "@elizonapp/ploi-ts-sdk",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "TypeScript SDK for the Ploi.io API",
   "license": "MIT",
   "author": "elizon",
@@ -44,7 +44,7 @@
     "build": "tsup src/index.ts --format esm,cjs --dts --clean --sourcemap",
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "npm run build",
-    "smoke": "npm run build && node scripts/smoke-models.mjs"
+    "smoke": "npm run build && node scripts/smoke-models.mjs && node scripts/smoke-async-pool.mjs"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com",

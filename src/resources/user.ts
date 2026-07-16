@@ -1,6 +1,8 @@
 import type { Ploi } from '../ploi';
-import { ApiResponse } from '../http/response';
+import { ApiResponse, listOf } from '../http/response';
 import { User } from '../models/user';
+import { SourceControlProvider } from '../models/source-control';
+import { BackupConfiguration } from '../models/backup-configuration';
 import { Resource } from './resource';
 
 export class UserResource extends Resource {
@@ -28,5 +30,35 @@ export class UserResource extends Resource {
     }
 
     return this.getPloi()!.makeAPICall(url);
+  }
+
+  async sourceControl(id?: number | null): Promise<ApiResponse<SourceControlProvider | SourceControlProvider[]>> {
+    let url = `${this.getEndpoint()}/source-control`;
+
+    if (id != null) {
+      url += `/${id}`;
+      return this.getPloi()!.makeAPICall(url, 'get', {}, SourceControlProvider);
+    }
+
+    return this.getPloi()!.makeAPICall(url, 'get', {}, listOf(SourceControlProvider));
+  }
+
+  async sourceControlRepositories(id: number): Promise<ApiResponse<unknown>> {
+    return this.getPloi()!.makeAPICall(
+      `${this.getEndpoint()}/source-control/${id}/repositories`,
+    );
+  }
+
+  async backupConfigurations(
+    id?: number | null,
+  ): Promise<ApiResponse<BackupConfiguration | BackupConfiguration[]>> {
+    let url = `${this.getEndpoint()}/backup-configurations`;
+
+    if (id != null) {
+      url += `/${id}`;
+      return this.getPloi()!.makeAPICall(url, 'get', {}, BackupConfiguration);
+    }
+
+    return this.getPloi()!.makeAPICall(url, 'get', {}, listOf(BackupConfiguration));
   }
 }

@@ -1,0 +1,1127 @@
+[
+  {
+    "m": "GET",
+    "p": "teapot",
+    "loc": "Ploi.teapot()"
+  },
+  {
+    "m": "GET",
+    "p": "ips",
+    "loc": "Ploi.ips()"
+  },
+  {
+    "m": "GET",
+    "p": "user",
+    "loc": "UserResource.get()"
+  },
+  {
+    "m": "GET",
+    "p": "user/server-providers",
+    "loc": "UserResource.serverProviders()"
+  },
+  {
+    "m": "GET",
+    "p": "user/server-providers/{id}",
+    "loc": "UserResource.serverProviders(id)"
+  },
+  {
+    "m": "GET",
+    "p": "user/backup-configurations",
+    "loc": "UserResource.backupConfigurations()"
+  },
+  {
+    "m": "GET",
+    "p": "user/backup-configurations/{id}",
+    "loc": "UserResource.backupConfigurations(id)"
+  },
+  {
+    "m": "GET",
+    "p": "user/source-control",
+    "loc": "UserResource.sourceControl()"
+  },
+  {
+    "m": "GET",
+    "p": "user/source-control/{id}",
+    "loc": "UserResource.sourceControl(id)"
+  },
+  {
+    "m": "GET",
+    "p": "user/source-control/{id}/repositories",
+    "loc": "UserResource.sourceControlRepositories(id)"
+  },
+  {
+    "m": "GET",
+    "p": "scripts",
+    "loc": "ScriptResource.page() / get()"
+  },
+  {
+    "m": "GET",
+    "p": "scripts/{id}",
+    "loc": "ScriptResource.get(id)"
+  },
+  {
+    "m": "POST",
+    "p": "scripts",
+    "loc": "ScriptResource.create()"
+  },
+  {
+    "m": "PATCH",
+    "p": "scripts/{id}",
+    "loc": "ScriptResource.update()"
+  },
+  {
+    "m": "DELETE",
+    "p": "scripts/{id}",
+    "loc": "ScriptResource.delete()"
+  },
+  {
+    "m": "POST",
+    "p": "scripts/{id}/run",
+    "loc": "ScriptResource.run()"
+  },
+  {
+    "m": "GET",
+    "p": "scripts/{id}/schedules",
+    "loc": "ScriptScheduleResource.page()"
+  },
+  {
+    "m": "GET",
+    "p": "scripts/{id}/schedules/{id}",
+    "loc": "ScriptScheduleResource.get(id)"
+  },
+  {
+    "m": "POST",
+    "p": "scripts/{id}/schedules",
+    "loc": "ScriptScheduleResource.create()"
+  },
+  {
+    "m": "PATCH",
+    "p": "scripts/{id}/schedules/{id}",
+    "loc": "ScriptScheduleResource.update()"
+  },
+  {
+    "m": "POST",
+    "p": "scripts/{id}/schedules/{id}/toggle",
+    "loc": "ScriptScheduleResource.toggle()"
+  },
+  {
+    "m": "DELETE",
+    "p": "scripts/{id}/schedules/{id}",
+    "loc": "ScriptScheduleResource.delete()"
+  },
+  {
+    "m": "GET",
+    "p": "scripts/{id}/actions",
+    "loc": "ScriptActionResource.page()"
+  },
+  {
+    "m": "GET",
+    "p": "scripts/{id}/actions/{id}",
+    "loc": "ScriptActionResource.get(id)"
+  },
+  {
+    "m": "POST",
+    "p": "scripts/{id}/actions",
+    "loc": "ScriptActionResource.create()"
+  },
+  {
+    "m": "PATCH",
+    "p": "scripts/{id}/actions/{id}",
+    "loc": "ScriptActionResource.update()"
+  },
+  {
+    "m": "POST",
+    "p": "scripts/{id}/actions/{id}/toggle",
+    "loc": "ScriptActionResource.toggle()"
+  },
+  {
+    "m": "POST",
+    "p": "scripts/{id}/actions/{id}/rotate-secret",
+    "loc": "ScriptActionResource.rotateSecret()"
+  },
+  {
+    "m": "DELETE",
+    "p": "scripts/{id}/actions/{id}",
+    "loc": "ScriptActionResource.delete()"
+  },
+  {
+    "m": "GET",
+    "p": "status-pages",
+    "loc": "StatusPageResource.page()"
+  },
+  {
+    "m": "GET",
+    "p": "status-pages/{id}",
+    "loc": "StatusPageResource.get(id)"
+  },
+  {
+    "m": "GET",
+    "p": "status-pages/{id}/incidents",
+    "loc": "IncidentResource.page()"
+  },
+  {
+    "m": "POST",
+    "p": "status-pages/{id}/incidents",
+    "loc": "IncidentResource.create()"
+  },
+  {
+    "m": "DELETE",
+    "p": "status-pages/{id}/incident/{id}",
+    "loc": "IncidentResource.delete()"
+  },
+  {
+    "m": "GET",
+    "p": "webserver-templates",
+    "loc": "WebserverTemplateResource.page()"
+  },
+  {
+    "m": "GET",
+    "p": "webserver-templates/{id}",
+    "loc": "WebserverTemplateResource.get(id)"
+  },
+  {
+    "m": "GET",
+    "p": "projects",
+    "loc": "ProjectResource.page()"
+  },
+  {
+    "m": "GET",
+    "p": "projects/{id}",
+    "loc": "ProjectResource.get(id)"
+  },
+  {
+    "m": "POST",
+    "p": "projects",
+    "loc": "ProjectResource.create()"
+  },
+  {
+    "m": "PATCH",
+    "p": "projects/{id}",
+    "loc": "ProjectResource.update()"
+  },
+  {
+    "m": "DELETE",
+    "p": "projects/{id}",
+    "loc": "ProjectResource.delete()"
+  },
+  {
+    "m": "GET",
+    "p": "servers",
+    "loc": "ServerResource.page()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}",
+    "loc": "ServerResource.get(id)"
+  },
+  {
+    "m": "POST",
+    "p": "servers",
+    "loc": "ServerResource.create()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/custom",
+    "loc": "ServerResource.createCustom()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/custom/{id}/start",
+    "loc": "ServerResource.startInstallation()"
+  },
+  {
+    "m": "PATCH",
+    "p": "servers/{id}",
+    "loc": "ServerResource.update()"
+  },
+  {
+    "m": "DELETE",
+    "p": "servers/{id}",
+    "loc": "ServerResource.delete()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/logs",
+    "loc": "ServerResource.logs()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/monitored",
+    "loc": "ServerResource.monitored()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/monitor",
+    "loc": "ServerResource.monitoring()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/restart",
+    "loc": "ServerResource.restart()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/databases",
+    "loc": "DatabaseResource.page()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/databases/{id}",
+    "loc": "DatabaseResource.get(id)"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/databases",
+    "loc": "DatabaseResource.create()"
+  },
+  {
+    "m": "DELETE",
+    "p": "servers/{id}/databases/{id}",
+    "loc": "DatabaseResource.delete()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/databases/acknowledge",
+    "loc": "DatabaseResource.acknowledge()"
+  },
+  {
+    "m": "DELETE",
+    "p": "servers/{id}/databases/{id}/forget",
+    "loc": "DatabaseResource.forget()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/databases/{id}/duplicate",
+    "loc": "DatabaseResource.duplicate()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/databases/{id}/users",
+    "loc": "DatabaseUserResource.page()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/databases/{id}/users/{id}",
+    "loc": "DatabaseUserResource.get(id)"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/databases/{id}/users",
+    "loc": "DatabaseUserResource.create()"
+  },
+  {
+    "m": "DELETE",
+    "p": "servers/{id}/databases/{id}/users/{id}",
+    "loc": "DatabaseUserResource.delete()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/databases/{id}/users/attach",
+    "loc": "DatabaseUserResource.attach()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/crontabs",
+    "loc": "CronjobResource.page()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/crontabs/{id}",
+    "loc": "CronjobResource.get(id)"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/crontabs",
+    "loc": "CronjobResource.create()"
+  },
+  {
+    "m": "DELETE",
+    "p": "servers/{id}/crontabs/{id}",
+    "loc": "CronjobResource.delete()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/network-rules",
+    "loc": "NetworkRuleResource.page()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/network-rules/{id}",
+    "loc": "NetworkRuleResource.get(id)"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/network-rules",
+    "loc": "NetworkRuleResource.create()"
+  },
+  {
+    "m": "DELETE",
+    "p": "servers/{id}/network-rules/{id}",
+    "loc": "NetworkRuleResource.delete()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/daemons",
+    "loc": "DaemonResource.page()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/daemons/{id}",
+    "loc": "DaemonResource.get(id)"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/daemons",
+    "loc": "DaemonResource.create()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/daemons/{id}/restart",
+    "loc": "DaemonResource.restart()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/daemons/{id}/toggle-pause",
+    "loc": "DaemonResource.pause()"
+  },
+  {
+    "m": "DELETE",
+    "p": "servers/{id}/daemons/{id}",
+    "loc": "DaemonResource.delete()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/system-users",
+    "loc": "SystemUserResource.page()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/system-users/{id}",
+    "loc": "SystemUserResource.get(id)"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/system-users",
+    "loc": "SystemUserResource.create()"
+  },
+  {
+    "m": "DELETE",
+    "p": "servers/{id}/system-users/{id}",
+    "loc": "SystemUserResource.delete()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/services/{id}/restart",
+    "loc": "ServiceResource.restart()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/services/{id}/reload",
+    "loc": "ServiceResource.reload()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/install/wp-cli",
+    "loc": "ServerResource.installWpCli()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/wp-cli/run",
+    "loc": "ServerResource.runWpCli()"
+  },
+  {
+    "m": "DELETE",
+    "p": "servers/{id}/uninstall/wp-cli",
+    "loc": "ServerResource.uninstallWpCli()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/refresh-opcache",
+    "loc": "OpcacheResource.refresh()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/enable-opcache",
+    "loc": "OpcacheResource.enable()"
+  },
+  {
+    "m": "DELETE",
+    "p": "servers/{id}/disable-opcache",
+    "loc": "OpcacheResource.disable()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/php/versions",
+    "loc": "ServerResource.phpVersions()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/php/install",
+    "loc": "ServerResource.installPhpVersion()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/php/cli-version",
+    "loc": "ServerResource.switchPhpCliVersion()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/ssh-keys",
+    "loc": "SshKeyResource.page()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/ssh-keys/{id}",
+    "loc": "SshKeyResource.get(id)"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/ssh-keys",
+    "loc": "SshKeyResource.create()"
+  },
+  {
+    "m": "DELETE",
+    "p": "servers/{id}/ssh-keys/{id}",
+    "loc": "SshKeyResource.delete()"
+  },
+  {
+    "m": "PATCH",
+    "p": "servers/{id}/load-balancer/attach",
+    "loc": "LoadBalancerResource.attach()"
+  },
+  {
+    "m": "PATCH",
+    "p": "servers/{id}/load-balancer/detach",
+    "loc": "LoadBalancerResource.detach()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/load-balancer/{id}/request-certificate",
+    "loc": "LoadBalancerResource.requestCertificate()"
+  },
+  {
+    "m": "DELETE",
+    "p": "servers/{id}/load-balancer/{id}/revoke-certificate",
+    "loc": "LoadBalancerResource.revokeCertificate()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/insights",
+    "loc": "InsightResource.page()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/insights/{id}",
+    "loc": "InsightResource.get(id)"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/insights/{id}/detail",
+    "loc": "InsightResource.detail()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/insights/{id}/automatically-fix",
+    "loc": "InsightResource.automaticallyFix()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/insights/{id}/ignore",
+    "loc": "InsightResource.ignore()"
+  },
+  {
+    "m": "DELETE",
+    "p": "servers/{id}/insights/{id}",
+    "loc": "InsightResource.delete()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/sites",
+    "loc": "SiteResource.page()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/sites/{id}",
+    "loc": "SiteResource.get(id)"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/sites",
+    "loc": "SiteResource.create()"
+  },
+  {
+    "m": "PATCH",
+    "p": "servers/{id}/sites/{id}",
+    "loc": "SiteResource.update() / RobotResource"
+  },
+  {
+    "m": "DELETE",
+    "p": "servers/{id}/sites/{id}",
+    "loc": "SiteResource.delete()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/sites/{id}/log",
+    "loc": "SiteResource.logs()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/sites/{id}/log/{id}",
+    "loc": "SiteResource.logs(logId)"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/sites/{id}/test-domain",
+    "loc": "SiteResource.testDomain()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/sites/{id}/test-domain",
+    "loc": "SiteResource.enableTestDomain()"
+  },
+  {
+    "m": "DELETE",
+    "p": "servers/{id}/sites/{id}/test-domain",
+    "loc": "SiteResource.disableTestDomain()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/sites/{id}/suspend",
+    "loc": "SiteResource.suspend()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/sites/{id}/resume",
+    "loc": "SiteResource.resume()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/sites/{id}/laravel/horizon/{id}",
+    "loc": "SiteResource.horizonStatistics(type)"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/sites/{id}/nginx-configuration",
+    "loc": "NginxConfigurationResource.get()"
+  },
+  {
+    "m": "PATCH",
+    "p": "servers/{id}/sites/{id}/nginx-configuration",
+    "loc": "NginxConfigurationResource.update()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/sites/{id}/clone",
+    "loc": "SiteResource.clone()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/sites/{id}/php-version",
+    "loc": "SiteResource.phpVersion()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/sites/{id}/permission-reset",
+    "loc": "SiteResource.resetPermissions()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/sites/{id}/deploy/script",
+    "loc": "DeploymentResource.deployScript()"
+  },
+  {
+    "m": "PATCH",
+    "p": "servers/{id}/sites/{id}/deploy/script",
+    "loc": "DeploymentResource.updateDeployScript()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/sites/{id}/deploy",
+    "loc": "DeploymentResource.deploy()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/sites/{id}/deploy-to-production",
+    "loc": "DeploymentResource.deployToProduction()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/sites/{id}/repository",
+    "loc": "RepositoryResource.get()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/sites/{id}/repository",
+    "loc": "RepositoryResource.install()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/sites/{id}/repository/custom-deployments",
+    "loc": "RepositoryResource.customDeployments()"
+  },
+  {
+    "m": "DELETE",
+    "p": "servers/{id}/sites/{id}/repository",
+    "loc": "RepositoryResource.delete()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/sites/{id}/repository/quick-deploy",
+    "loc": "RepositoryResource.toggleQuickDeploy()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/sites/{id}/env",
+    "loc": "EnvironmentResource.get()"
+  },
+  {
+    "m": "PATCH",
+    "p": "servers/{id}/sites/{id}/env",
+    "loc": "EnvironmentResource.update()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/sites/{id}/queues",
+    "loc": "QueueResource.page()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/sites/{id}/queues/{id}",
+    "loc": "QueueResource.get(id)"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/sites/{id}/queues",
+    "loc": "QueueResource.create()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/sites/{id}/queues/{id}/restart",
+    "loc": "QueueResource.restart()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/sites/{id}/queues/{id}/toggle-pause",
+    "loc": "QueueResource.pause()"
+  },
+  {
+    "m": "DELETE",
+    "p": "servers/{id}/sites/{id}/queues/{id}",
+    "loc": "QueueResource.delete()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/sites/{id}/redirects",
+    "loc": "RedirectResource.page()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/sites/{id}/redirects/{id}",
+    "loc": "RedirectResource.get(id)"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/sites/{id}/redirects",
+    "loc": "RedirectResource.create()"
+  },
+  {
+    "m": "DELETE",
+    "p": "servers/{id}/sites/{id}/redirects/{id}",
+    "loc": "RedirectResource.delete()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/sites/{id}/certificates",
+    "loc": "CertificateResource.page()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/sites/{id}/certificates/{id}",
+    "loc": "CertificateResource.get(id)"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/sites/{id}/certificates",
+    "loc": "CertificateResource.create()"
+  },
+  {
+    "m": "DELETE",
+    "p": "servers/{id}/sites/{id}/certificates/{id}",
+    "loc": "CertificateResource.delete()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/sites/{id}/auth-users",
+    "loc": "AuthUserResource.page()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/sites/{id}/auth-users/{id}",
+    "loc": "AuthUserResource.get(id)"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/sites/{id}/auth-users",
+    "loc": "AuthUserResource.create()"
+  },
+  {
+    "m": "DELETE",
+    "p": "servers/{id}/sites/{id}/auth-users/{id}",
+    "loc": "AuthUserResource.delete()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/sites/{id}/aliases",
+    "loc": "AliasResource.get()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/sites/{id}/aliases",
+    "loc": "AliasResource.create()"
+  },
+  {
+    "m": "DELETE",
+    "p": "servers/{id}/sites/{id}/aliases/{id}",
+    "loc": "AliasResource.delete()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/sites/{id}/tenants",
+    "loc": "TenantResource.get()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/sites/{id}/tenants",
+    "loc": "TenantResource.create()"
+  },
+  {
+    "m": "DELETE",
+    "p": "servers/{id}/sites/{id}/tenants/{id}",
+    "loc": "TenantResource.delete()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/sites/{id}/tenants/{id}/request-certificate",
+    "loc": "TenantResource.requestCertificate()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/sites/{id}/tenants/{id}/revoke-certificate",
+    "loc": "TenantResource.revokeCertificate()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/sites/{id}/tenants/{id}/nginx-configuration",
+    "loc": "TenantResource.getNginxConfiguration()"
+  },
+  {
+    "m": "PATCH",
+    "p": "servers/{id}/sites/{id}/tenants/{id}/nginx-configuration",
+    "loc": "TenantResource.updateNginxConfiguration()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/sites/{id}/monitors",
+    "loc": "MonitorsResource.page()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/sites/{id}/monitors/{id}",
+    "loc": "MonitorsResource.get(id)"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/sites/{id}/monitors/{id}/uptime-responses",
+    "loc": "MonitorsResource.uptimeResponses()"
+  },
+  {
+    "m": "DELETE",
+    "p": "servers/{id}/sites/{id}/monitors/{id}",
+    "loc": "MonitorsResource.delete()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/sites/{id}/wordpress",
+    "loc": "AppResource.install(\"wordpress\")"
+  },
+  {
+    "m": "DELETE",
+    "p": "servers/{id}/sites/{id}/wordpress",
+    "loc": "AppResource.uninstall(\"wordpress\")"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/sites/{id}/nextcloud",
+    "loc": "AppResource.install(\"nextcloud\")"
+  },
+  {
+    "m": "DELETE",
+    "p": "servers/{id}/sites/{id}/nextcloud",
+    "loc": "AppResource.uninstall(\"nextcloud\")"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/sites/{id}/statamic",
+    "loc": "AppResource.install(\"statamic\")"
+  },
+  {
+    "m": "DELETE",
+    "p": "servers/{id}/sites/{id}/statamic",
+    "loc": "AppResource.uninstall(\"statamic\")"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/sites/{id}/wordpress/complete-install",
+    "loc": "WordpressResource.completeInstall()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/sites/{id}/wordpress/plugins",
+    "loc": "WordpressResource.plugins()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/sites/{id}/wordpress/plugins/activate",
+    "loc": "WordpressResource.activatePlugin()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/sites/{id}/wordpress/plugins/deactivate",
+    "loc": "WordpressResource.deactivatePlugin()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/sites/{id}/wordpress/plugins/update",
+    "loc": "WordpressResource.updatePlugin()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/sites/{id}/wordpress/plugins/install",
+    "loc": "WordpressResource.installPlugin()"
+  },
+  {
+    "m": "DELETE",
+    "p": "servers/{id}/sites/{id}/wordpress/plugins/delete",
+    "loc": "WordpressResource.deletePlugin()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/sites/{id}/wordpress/themes",
+    "loc": "WordpressResource.themes()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/sites/{id}/wordpress/themes/activate",
+    "loc": "WordpressResource.activateTheme()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/sites/{id}/wordpress/themes/deactivate",
+    "loc": "WordpressResource.deactivateTheme()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/sites/{id}/wordpress/themes/update",
+    "loc": "WordpressResource.updateTheme()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/sites/{id}/wordpress/themes/install",
+    "loc": "WordpressResource.installTheme()"
+  },
+  {
+    "m": "DELETE",
+    "p": "servers/{id}/sites/{id}/wordpress/themes/delete",
+    "loc": "WordpressResource.deleteTheme()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/sites/{id}/wordpress/toggle-xmlrpc",
+    "loc": "WordpressResource.toggleXmlrpc()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/sites/{id}/wordpress/wp-cli/run",
+    "loc": "WordpressResource.runWpCli()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/sites/{id}/wordpress/search-replace",
+    "loc": "WordpressResource.searchReplace()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/sites/{id}/wordpress/repositories",
+    "loc": "WordpressResource.repositories()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/sites/{id}/wordpress/repositories",
+    "loc": "WordpressResource.installRepository()"
+  },
+  {
+    "m": "PATCH",
+    "p": "servers/{id}/sites/{id}/wordpress/repositories/{id}",
+    "loc": "WordpressResource.updateRepository()"
+  },
+  {
+    "m": "PATCH",
+    "p": "servers/{id}/sites/{id}/wordpress/repositories/{id}/deploy-script",
+    "loc": "WordpressResource.updateRepositoryDeployScript()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/sites/{id}/wordpress/repositories/{id}/deploy",
+    "loc": "WordpressResource.deployRepository()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/sites/{id}/wordpress/repositories/deploy-all",
+    "loc": "WordpressResource.deployAllRepositories()"
+  },
+  {
+    "m": "DELETE",
+    "p": "servers/{id}/sites/{id}/wordpress/repositories/{id}",
+    "loc": "WordpressResource.deleteRepository()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/sites/{id}/fastcgi-cache/enable",
+    "loc": "FastCgiResource.enable()"
+  },
+  {
+    "m": "DELETE",
+    "p": "servers/{id}/sites/{id}/fastcgi-cache/disable",
+    "loc": "FastCgiResource.disable()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/sites/{id}/fastcgi-cache/flush",
+    "loc": "FastCgiResource.flush()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/docker/containers",
+    "loc": "DockerContainerResource.page()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/docker/containers/{id}",
+    "loc": "DockerContainerResource.get(id)"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/docker/containers",
+    "loc": "DockerContainerResource.create()"
+  },
+  {
+    "m": "PATCH",
+    "p": "servers/{id}/docker/containers/{id}",
+    "loc": "DockerContainerResource.update()"
+  },
+  {
+    "m": "DELETE",
+    "p": "servers/{id}/docker/containers/{id}",
+    "loc": "DockerContainerResource.delete()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/docker/containers/{id}/up",
+    "loc": "DockerContainerResource.start()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/docker/containers/{id}/down",
+    "loc": "DockerContainerResource.stop()"
+  },
+  {
+    "m": "GET",
+    "p": "servers/{id}/docker/containers/{id}/logs",
+    "loc": "DockerContainerResource.logs()"
+  },
+  {
+    "m": "POST",
+    "p": "servers/{id}/docker/containers/{id}/site/link",
+    "loc": "DockerContainerResource.linkSite()"
+  },
+  {
+    "m": "DELETE",
+    "p": "servers/{id}/docker/containers/{id}/site/unlink",
+    "loc": "DockerContainerResource.unlinkSite()"
+  },
+  {
+    "m": "GET",
+    "p": "backups/database",
+    "loc": "DatabaseBackupResource.page()"
+  },
+  {
+    "m": "GET",
+    "p": "backups/database/{id}",
+    "loc": "DatabaseBackupResource.get(id)"
+  },
+  {
+    "m": "POST",
+    "p": "backups/database",
+    "loc": "DatabaseBackupResource.create()"
+  },
+  {
+    "m": "PATCH",
+    "p": "backups/database/{id}",
+    "loc": "DatabaseBackupResource.update()"
+  },
+  {
+    "m": "POST",
+    "p": "backups/database/{id}/run",
+    "loc": "DatabaseBackupResource.run()"
+  },
+  {
+    "m": "DELETE",
+    "p": "backups/database/{id}",
+    "loc": "DatabaseBackupResource.delete()"
+  },
+  {
+    "m": "GET",
+    "p": "backups/file",
+    "loc": "FileBackupResource.page()"
+  },
+  {
+    "m": "GET",
+    "p": "backups/file/{id}",
+    "loc": "FileBackupResource.get(id)"
+  },
+  {
+    "m": "POST",
+    "p": "backups/file",
+    "loc": "FileBackupResource.create()"
+  },
+  {
+    "m": "PATCH",
+    "p": "backups/file/{id}",
+    "loc": "FileBackupResource.update()"
+  },
+  {
+    "m": "POST",
+    "p": "backups/file/{id}/run",
+    "loc": "FileBackupResource.run()"
+  },
+  {
+    "m": "DELETE",
+    "p": "backups/file/{id}",
+    "loc": "FileBackupResource.delete()"
+  },
+  {
+    "m": "GET",
+    "p": "user/statistics",
+    "loc": "UserResource.statistics()"
+  },
+  {
+    "m": "GET",
+    "p": "synchronize/servers",
+    "loc": "SynchronizeResource.servers()"
+  },
+  {
+    "m": "PATCH",
+    "p": "backups/database/{id}/toggle",
+    "loc": "DatabaseBackupResource.toggle()"
+  }
+]

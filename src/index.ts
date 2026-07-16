@@ -1,6 +1,9 @@
-export { Ploi } from './ploi';
+export { Ploi, MCP_URL } from './ploi';
+export type { PloiOptions, HttpMethod, ApiCallOptions } from './ploi';
 export { ApiResponse, Response, listOf } from './http/response';
 export type { ApiJson, ModelFactory } from './http/response';
+export { AsyncPool } from './http/async-pool';
+export type { AsyncPoolOptions } from './http/async-pool';
 export { Resource } from './resources/resource';
 export * from './exceptions';
 export * from './models';

@@ -46,11 +46,19 @@ export class IncidentResource extends Resource {
       : this.getPloi()!.makeAPICall(this.getEndpoint()!, 'get', {}, Incident);
   }
 
-  async create(title: string, description: string, severity: string): Promise<ApiResponse<Incident>> {
+  async create(
+    title: string,
+    description?: string | null,
+    severity?: string | null,
+  ): Promise<ApiResponse<Incident>> {
     this.buildEndpoint();
 
+    const body: Record<string, unknown> = { title };
+    if (description != null) body.description = description;
+    if (severity != null) body.severity = severity;
+
     const response = await this.getPloi()!.makeAPICall(this.getEndpoint()!, 'post', {
-      body: { title, description, severity },
+      body,
     }, Incident);
     this.setId(response.getDataId());
 
@@ -59,9 +67,9 @@ export class IncidentResource extends Resource {
 
   async delete(id?: number | null): Promise<ApiResponse<unknown>> {
     this.setIdOrFail(id);
-    this.buildEndpoint();
-
-    return this.getPloi()!.makeAPICall(this.getEndpoint()!, 'delete');
+    // Docs use singular `/incident/{id}` for delete (list/create use `/incidents`)
+    const url = `${this.getStatusPage().getEndpoint()}/incident/${this.getId()}`;
+    return this.getPloi()!.makeAPICall(url, 'delete');
   }
 
   override async page(

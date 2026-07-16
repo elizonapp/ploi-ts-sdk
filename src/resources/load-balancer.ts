@@ -14,6 +14,18 @@ export class LoadBalancerResource extends Resource {
     return this;
   }
 
+  async attach(serverId: number): Promise<ApiResponse<unknown>> {
+    return this.getPloi()!.makeAPICall(`${this.getEndpoint()}/attach`, 'patch', {
+      body: { server_id: serverId },
+    });
+  }
+
+  async detach(serverId: number): Promise<ApiResponse<unknown>> {
+    return this.getPloi()!.makeAPICall(`${this.getEndpoint()}/detach`, 'patch', {
+      body: { server_id: serverId },
+    });
+  }
+
   async requestCertificate(domain: string): Promise<ApiResponse<unknown>> {
     const url = `${this.getEndpoint()}/${domain}/request-certificate`;
     return this.getPloi()!.makeAPICall(url, 'post');

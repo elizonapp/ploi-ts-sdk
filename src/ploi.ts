@@ -1,4 +1,5 @@
 import { ApiResponse, type ModelFactory } from './http/response';
+import { AsyncPool } from './http/async-pool';
 import { Unauthenticated } from './exceptions/http/unauthenticated';
 import { NotFound } from './exceptions/http/not-found';
 import { NotAllowed } from './exceptions/http/not-allowed';
@@ -13,6 +14,10 @@ import { StatusPageResource } from './resources/status-page';
 import { UserResource } from './resources/user';
 import { WebserverTemplateResource } from './resources/webserver-template';
 import { FileBackupResource } from './resources/file-backup';
+import { DatabaseBackupResource } from './resources/database-backup';
+import { SynchronizeResource } from './resources/synchronize';
+
+export const MCP_URL = 'https://ploi.io/api/mcp';
 
 export type HttpMethod = 'get' | 'post' | 'patch' | 'delete';
 
@@ -21,11 +26,31 @@ export type ApiCallOptions = {
   headers?: Record<string, string>;
 };
 
+export type PloiOptions = {
+  /** Required by the Ploi API. Defaults to `@elizonapp/ploi-ts-sdk/1.0.0`. */
+  userAgent?: string;
+  /** Reactive 429 pool (burst → retry every 1s → burst). Default: true. */
+  rateLimitPool?: boolean;
+  /** Delay between 429 retries in ms. Default: 1000. */
+  rateLimitRetryIntervalMs?: number;
+};
+
+const DEFAULT_USER_AGENT = '@elizonapp/ploi-ts-sdk/1.0.0';
+
 export class Ploi {
   private url = 'https://ploi.io/api/';
   private apiToken: string | null = null;
+  private userAgent: string;
+  private rateLimitPoolEnabled: boolean;
+  private readonly pool: AsyncPool;
 
-  constructor(token?: string | null) {
+  constructor(token?: string | null, options: PloiOptions = {}) {
+    this.userAgent = options.userAgent ?? DEFAULT_USER_AGENT;
+    this.rateLimitPoolEnabled = options.rateLimitPool !== false;
+    this.pool = new AsyncPool({
+      retryIntervalMs: options.rateLimitRetryIntervalMs ?? 1000,
+    });
+
     if (token) {
       this.setApiToken(token);
     }
@@ -43,7 +68,40 @@ export class Ploi {
     return this.apiToken;
   }
 
+  setUserAgent(userAgent: string): this {
+    this.userAgent = userAgent;
+    return this;
+  }
+
+  getUserAgent(): string {
+    return this.userAgent;
+  }
+
+  setRateLimitPool(enabled: boolean): this {
+    this.rateLimitPoolEnabled = enabled;
+    return this;
+  }
+
+  isRateLimitPoolEnabled(): boolean {
+    return this.rateLimitPoolEnabled;
+  }
+
   async makeAPICall<T = unknown>(
+    url: string,
+    method: HttpMethod = 'get',
+    options: ApiCallOptions = {},
+    factory?: ModelFactory<T>,
+  ): Promise<ApiResponse<T>> {
+    const run = () => this.executeAPICall(url, method, options, factory);
+
+    if (!this.rateLimitPoolEnabled) {
+      return run();
+    }
+
+    return this.pool.schedule(run);
+  }
+
+  private async executeAPICall<T = unknown>(
     url: string,
     method: HttpMethod = 'get',
     options: ApiCallOptions = {},
@@ -58,6 +116,7 @@ export class Ploi {
       Authorization: `Bearer ${this.getApiToken()}`,
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      'User-Agent': this.userAgent,
       ...options.headers,
     };
 
@@ -90,7 +149,7 @@ export class Ploi {
       case 422:
         throw new NotValid(bodyText || undefined);
       case 429:
-        throw new TooManyAttempts(bodyText || undefined);
+        throw TooManyAttempts.fromResponse(response, bodyText);
       case 500:
         throw new InternalServerError(bodyText || undefined);
       case 503:
@@ -98,6 +157,16 @@ export class Ploi {
     }
 
     return new ApiResponse<T>(response, bodyText, factory);
+  }
+
+  /** Easter-egg endpoint. */
+  async teapot(): Promise<ApiResponse<unknown>> {
+    return this.makeAPICall('teapot');
+  }
+
+  /** Ploi worker / monitor IP addresses for firewall allowlists. */
+  async ips(): Promise<ApiResponse<unknown>> {
+    return this.makeAPICall('ips');
   }
 
   server(id?: number | null): ServerResource {
@@ -138,5 +207,17 @@ export class Ploi {
 
   fileBackups(id?: number | null): FileBackupResource {
     return this.fileBackup(id);
+  }
+
+  databaseBackup(id?: number | null): DatabaseBackupResource {
+    return DatabaseBackupResource.root(this, id);
+  }
+
+  databaseBackups(id?: number | null): DatabaseBackupResource {
+    return this.databaseBackup(id);
+  }
+
+  synchronize(): SynchronizeResource {
+    return new SynchronizeResource(this);
   }
 }

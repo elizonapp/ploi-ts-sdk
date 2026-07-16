@@ -48,6 +48,10 @@ export class FileBackupResource extends Resource {
     custom_name?: string | null,
     password?: string | null,
     deleteOnFail?: boolean | null,
+    options: {
+      local_path?: string;
+      next_backup_at?: string;
+    } = {},
   ): Promise<ApiResponse<FileBackup>> {
     this.setId(null);
     this.buildEndpoint();
@@ -64,11 +68,32 @@ export class FileBackupResource extends Resource {
         custom_name,
         password,
         deleteOnFail,
+        ...options,
       },
     }, FileBackup);
     this.setId(response.getDataId());
 
     return response;
+  }
+
+  async update(fields: {
+    interval?: number;
+    keep_backup_amount?: number;
+    path?: Record<string, string> | string[];
+    locations?: string;
+    next_backup_at?: string;
+    custom_name?: string;
+    password?: string;
+    deleteOnFail?: boolean;
+    sites?: number[];
+    compression?: boolean | string;
+    excluded?: string[];
+    local_path?: string;
+  }): Promise<ApiResponse<FileBackup>> {
+    this.setIdOrFail();
+    const url = `backups/file/${this.getId()}`;
+
+    return this.getPloi()!.makeAPICall(url, 'patch', { body: fields }, FileBackup);
   }
 
   async run(id?: number | null): Promise<ApiResponse<unknown>> {

@@ -45,6 +45,7 @@ export class QueueResource extends Resource {
     sleep = 30,
     processes = 1,
     maximumTries = 1,
+    backoff = 0,
   ): Promise<ApiResponse<QueueWorker>> {
     this.setId(null);
     this.buildEndpoint();
@@ -57,6 +58,7 @@ export class QueueResource extends Resource {
         sleep,
         processes,
         maximum_tries: maximumTries,
+        backoff,
       },
     }, QueueWorker);
 
