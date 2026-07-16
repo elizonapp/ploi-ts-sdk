@@ -38,6 +38,21 @@ console.log(site.domain, site.phpVersion);
 await ploi.servers(1).sites(2).deployment().deploy();
 ```
 
+### Ploi Core (self-hosted)
+
+For [Ploi Core](https://developers.ploi.io/ploicore/core-api/introduction) panels, use `PloiCore` with your panel base URL:
+
+```ts
+import { PloiCore, CoreUser, CoreSite } from '@elizonapp/ploi-ts-sdk';
+
+const core = new PloiCore(process.env.PLOI_CORE_TOKEN!, {
+  baseUrl: 'https://panel.example.com/api',
+});
+
+const users: CoreUser[] = (await core.users().get()).getData();
+await core.sites().create({ server_id: 146, domain: 'domain.com', user_id: 120 });
+```
+
 ### Rate-limit pool (global)
 
 **Every** `makeAPICall` goes through one reactive pool — servers, sites, docker, backups, scripts, … alike. This is **not** Laravel queue workers (`sites().queues()`).
@@ -86,6 +101,7 @@ npx tsx examples/01-basic.ts
 | `examples/04-deploy.ts` | Deploy script / deploy |
 | `examples/05-databases.ts` | Databases + users |
 | `examples/06-errors.ts` | Exception handling |
+| `examples/07-ploi-core.ts` | Ploi Core panel API |
 
 Destructive steps are opt-in via env flags (`PLOI_CREATE_SITE`, `PLOI_DEPLOY`).
 

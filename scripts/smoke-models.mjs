@@ -1,4 +1,15 @@
-import { Server, Site, ApiResponse, listOf } from '../dist/index.js';
+import {
+  Server,
+  Site,
+  ApiResponse,
+  listOf,
+  CoreUser,
+  CoreSite,
+  CorePackage,
+  Ploi,
+  PloiCore,
+  normalizeBaseUrl,
+} from '../dist/index.js';
 
 function assert(cond, msg) {
   if (!cond) throw new Error(msg);
@@ -59,5 +70,60 @@ const list = api.getData();
 assert(Array.isArray(list) && list[0] instanceof Server, 'listOf Server');
 assert(list[0].name === 'awesome-server', 'list[0].name');
 assert(api.getMeta()?.total === 1, 'meta.total');
+
+const coreUser = CoreUser.from({
+  id: 1,
+  avatar: 'https://example.com/avatar',
+  name: 'John Doe',
+  email: 'john@doe.com',
+  package_id: null,
+  blocked: null,
+  created_at: '2022-07-23T13:35:51.000000Z',
+});
+assert(coreUser.name === 'John Doe', 'coreUser.name');
+assert(coreUser.packageId === null, 'coreUser.packageId');
+
+const coreSite = CoreSite.from({
+  id: 2,
+  status: 'active',
+  server_id: 146,
+  domain: 'domain.com',
+  user_id: '120',
+  created_at: '2022-07-23T13:35:51.000000Z',
+});
+assert(coreSite.domain === 'domain.com', 'coreSite.domain');
+assert(coreSite.userId === '120', 'coreSite.userId');
+
+const corePackage = CorePackage.from({
+  id: 1,
+  name: 'Basic',
+  maximum_servers: 1,
+  maximum_sites: 3,
+  price_hourly: 0,
+  price_monthly: 0,
+  price_yearly: 0,
+  stripe_plan_id: null,
+  currency: 'usd',
+  server_permissions: { create: false, update: false, delete: false },
+  site_permissions: { create: true, update: true, delete: true },
+  created_at: '2022-07-23T13:35:51.000000Z',
+});
+assert(corePackage.maximumSites === 3, 'corePackage.maximumSites');
+assert(corePackage.sitePermissions.create === true, 'corePackage.sitePermissions.create');
+
+assert(normalizeBaseUrl('https://panel.example.com/api') === 'https://panel.example.com/api/', 'normalizeBaseUrl');
+
+const ploi = new Ploi('token', { baseUrl: 'https://panel.example.com/api' });
+assert(ploi.getBaseUrl() === 'https://panel.example.com/api/', 'ploi.getBaseUrl');
+
+try {
+  new PloiCore('', { baseUrl: '' });
+  throw new Error('PloiCore should require baseUrl');
+} catch (error) {
+  assert(error.message.includes('baseUrl'), 'PloiCore baseUrl required');
+}
+
+const core = new PloiCore('token', { baseUrl: 'https://panel.example.com/api' });
+assert(core.getBaseUrl() === 'https://panel.example.com/api/', 'PloiCore.getBaseUrl');
 
 console.log('model smoke tests ok');

@@ -28,11 +28,35 @@ const ploi2 = new Ploi();
 ploi2.setApiToken(process.env.PLOI_API_TOKEN!);
 ```
 
-API base URL: `https://ploi.io/api/`  
-Auth header: `Authorization: Bearer <token>`  
+API base URL: `https://ploi.io/api/` (override with `{ baseUrl: '...' }` or `setBaseUrl()`)
+Auth header: `Authorization: Bearer <token>`
 User-Agent: required by Ploi (defaults to `@elizonapp/ploi-ts-sdk/1.0.0`)
 
 Requests are queued through a reactive rate-limit pool (burst → 429 retry every 1s → burst). Disable with `{ rateLimitPool: false }`.
+
+## Ploi Core (self-hosted panel)
+
+For a [Ploi Core](https://developers.ploi.io/ploicore/core-api/introduction) installation, use `PloiCore` with your panel URL:
+
+```ts
+import { PloiCore, CoreUser, CoreSite } from '@elizonapp/ploi-ts-sdk';
+
+const core = new PloiCore(process.env.PLOI_CORE_TOKEN!, {
+  baseUrl: 'https://panel.example.com/api',
+  userAgent: 'my-app',
+});
+
+const users: CoreUser[] = (await core.users().get()).getData();
+const site: CoreSite = (
+  await core.sites().create({
+    server_id: 146,
+    domain: 'domain.com',
+    user_id: 120,
+  })
+).getData();
+```
+
+Core API surface: `users()`, `sites()`, `servers()` (create only), `packages()`. Models are prefixed `Core*` to avoid clashing with the cloud API types.
 
 ## First call
 

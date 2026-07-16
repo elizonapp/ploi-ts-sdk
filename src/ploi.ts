@@ -26,7 +26,19 @@ export type ApiCallOptions = {
   headers?: Record<string, string>;
 };
 
+export const DEFAULT_BASE_URL = 'https://ploi.io/api/';
+
+export function normalizeBaseUrl(baseUrl: string): string {
+  const trimmed = baseUrl.trim();
+  if (!trimmed) {
+    throw new Error('baseUrl must not be empty');
+  }
+  return trimmed.endsWith('/') ? trimmed : `${trimmed}/`;
+}
+
 export type PloiOptions = {
+  /** API base URL. Defaults to `https://ploi.io/api/`. */
+  baseUrl?: string;
   /** Required by the Ploi API. Defaults to `@elizonapp/ploi-ts-sdk/1.0.0`. */
   userAgent?: string;
   /**
@@ -43,13 +55,16 @@ export type PloiOptions = {
 const DEFAULT_USER_AGENT = '@elizonapp/ploi-ts-sdk/1.0.0';
 
 export class Ploi {
-  private url = 'https://ploi.io/api/';
+  private url = DEFAULT_BASE_URL;
   private apiToken: string | null = null;
   private userAgent: string;
   private rateLimitPoolEnabled: boolean;
   private readonly pool: AsyncPool;
 
   constructor(token?: string | null, options: PloiOptions = {}) {
+    if (options.baseUrl) {
+      this.setBaseUrl(options.baseUrl);
+    }
     this.userAgent = options.userAgent ?? DEFAULT_USER_AGENT;
     this.rateLimitPoolEnabled = options.rateLimitPool !== false;
 
@@ -86,6 +101,15 @@ export class Ploi {
 
   getUserAgent(): string {
     return this.userAgent;
+  }
+
+  setBaseUrl(baseUrl: string): this {
+    this.url = normalizeBaseUrl(baseUrl);
+    return this;
+  }
+
+  getBaseUrl(): string {
+    return this.url;
   }
 
   setRateLimitPool(enabled: boolean): this {
