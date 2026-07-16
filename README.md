@@ -84,12 +84,6 @@ npm run build
 npm run smoke
 ```
 
-## Publish
-
-1. Bump `version` in `package.json`
-2. Create a GitHub Release **or** run workflow **Publish Package**
-3. Publishes to GitHub Packages as `@elizonapp/ploi-ts-sdk`
-
 ## Requirements
 
 Node.js 18+ (native `fetch`)
