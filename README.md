@@ -84,6 +84,22 @@ npm run build
 npm run smoke
 ```
 
+## Release & publish
+
+Same pattern as [`api-client-typescript`](https://github.com/elizonapp/api-client-typescript/blob/main/.github/workflows/reusable-publish.yml):
+
+On every push to `main` / `master`, Actions:
+
+1. Builds and uploads `dist`
+2. Publishes `@elizonapp/ploi-ts-sdk@{base}-{run_id}` to GitHub Packages (unique version, no E409)
+3. Creates a GitHub Release with the same version tag
+
+PRs only run the build job.
+
 ## Requirements
 
 Node.js 18+ (native `fetch`)
+
+## License
+
+MIT

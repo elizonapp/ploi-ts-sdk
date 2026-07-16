@@ -1,0 +1,43 @@
+name: Reusable — build
+
+on:
+  workflow_call:
+    inputs:
+      project-dir:
+        type: string
+        default: .
+
+jobs:
+  build:
+    name: Build & test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ inputs.project-dir }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: ${{ inputs.project-dir }}/package-lock.json
+
+      - name: Install
+        run: |
+          if [ -f package-lock.json ]; then npm ci; else npm install; fi
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Build
+        run: npm run build
+
+      - name: Smoke
+        run: node scripts/smoke-models.mjs
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ploi-ts-sdk-dist
+          path: ${{ inputs.project-dir }}/dist
+          retention-days: 14
