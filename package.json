@@ -1,6 +1,6 @@
 {
   "name": "@elizonapp/ploi-ts-sdk",
-  "version": "1.0.1",
+  "version": "1.0.1b",
   "description": "TypeScript SDK for the Ploi.io API",
   "license": "MIT",
   "author": "elizon",

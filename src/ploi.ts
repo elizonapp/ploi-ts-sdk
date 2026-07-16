@@ -1,5 +1,5 @@
 import { ApiResponse, type ModelFactory } from './http/response';
-import { AsyncPool } from './http/async-pool';
+import { AsyncPool, getSharedAsyncPool } from './http/async-pool';
 import { Unauthenticated } from './exceptions/http/unauthenticated';
 import { NotFound } from './exceptions/http/not-found';
 import { NotAllowed } from './exceptions/http/not-allowed';
@@ -29,8 +29,13 @@ export type ApiCallOptions = {
 export type PloiOptions = {
   /** Required by the Ploi API. Defaults to `@elizonapp/ploi-ts-sdk/1.0.0`. */
   userAgent?: string;
-  /** Reactive 429 pool (burst → retry every 1s → burst). Default: true. */
-  rateLimitPool?: boolean;
+  /**
+   * Reactive 429 pool for ALL API calls (servers, sites, docker, backups, …).
+   * - `true` / omitted: process-wide shared pool (API limit is account-global)
+   * - `'instance'`: private pool for this client only
+   * - `false`: disabled (429 throws immediately)
+   */
+  rateLimitPool?: boolean | 'instance';
   /** Delay between 429 retries in ms. Default: 1000. */
   rateLimitRetryIntervalMs?: number;
 };
@@ -47,9 +52,15 @@ export class Ploi {
   constructor(token?: string | null, options: PloiOptions = {}) {
     this.userAgent = options.userAgent ?? DEFAULT_USER_AGENT;
     this.rateLimitPoolEnabled = options.rateLimitPool !== false;
-    this.pool = new AsyncPool({
+
+    const poolOptions = {
       retryIntervalMs: options.rateLimitRetryIntervalMs ?? 1000,
-    });
+    };
+    // Default: one shared pool for the whole process — every resource shares the limit.
+    this.pool =
+      options.rateLimitPool === 'instance'
+        ? new AsyncPool(poolOptions)
+        : getSharedAsyncPool(poolOptions);
 
     if (token) {
       this.setApiToken(token);

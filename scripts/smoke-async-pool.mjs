@@ -2,15 +2,19 @@
  * Smoke test for the reactive AsyncPool / rate-limit behaviour.
  * Mocks global fetch: first N calls return 429, then 200.
  */
-import { Ploi, TooManyAttempts, AsyncPool } from '../dist/index.js';
+import {
+  Ploi,
+  TooManyAttempts,
+  AsyncPool,
+  resetSharedAsyncPool,
+  getSharedAsyncPool,
+} from '../dist/index.js';
 
 function assert(cond, msg) {
   if (!cond) throw new Error(msg);
 }
 
-function sleep(ms) {
-  return new Promise((r) => setTimeout(r, ms));
-}
+resetSharedAsyncPool();
 
 // --- Unit: AsyncPool directly ---
 {
@@ -30,15 +34,15 @@ function sleep(ms) {
   assert(attempts === 3, `expected 3 attempts, got ${attempts}`);
 }
 
+resetSharedAsyncPool();
+
 // --- Integration: Ploi.makeAPICall with mocked fetch ---
 {
   const originalFetch = globalThis.fetch;
   let calls = 0;
-  const callLog = [];
 
-  globalThis.fetch = async (url) => {
+  globalThis.fetch = async () => {
     calls += 1;
-    callLog.push(String(url));
     if (calls <= 2) {
       return new Response(
         JSON.stringify({ message: 'Too many requests' }),
@@ -77,6 +81,49 @@ function sleep(ms) {
   }
 }
 
+resetSharedAsyncPool();
+
+// --- Shared pool: docker + sites + two clients use ONE queue ---
+{
+  const originalFetch = globalThis.fetch;
+  let inFlight = 0;
+  let maxInFlight = 0;
+  let calls = 0;
+
+  globalThis.fetch = async (url) => {
+    calls += 1;
+    inFlight += 1;
+    maxInFlight = Math.max(maxInFlight, inFlight);
+    await new Promise((r) => setTimeout(r, 20));
+    inFlight -= 1;
+    return new Response(JSON.stringify({ data: { ok: true, url: String(url) } }), {
+      status: 200,
+    });
+  };
+
+  try {
+    const a = new Ploi('tok-a', { rateLimitRetryIntervalMs: 50 });
+    const b = new Ploi('tok-b', { rateLimitRetryIntervalMs: 50 });
+
+    // Same shared singleton
+    assert(getSharedAsyncPool() === getSharedAsyncPool(), 'singleton shared pool');
+
+    await Promise.all([
+      a.makeAPICall('servers/1/docker/containers'),
+      a.makeAPICall('servers/1/sites'),
+      b.makeAPICall('servers'),
+      b.makeAPICall('backups/file'),
+    ]);
+
+    assert(calls === 4, `expected 4 calls, got ${calls}`);
+    assert(maxInFlight === 4, `shared burst should run all 4, maxInFlight=${maxInFlight}`);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+}
+
+resetSharedAsyncPool();
+
 // --- Burst: multiple tasks, one 429, then resume ---
 {
   const originalFetch = globalThis.fetch;
@@ -97,7 +144,6 @@ function sleep(ms) {
   try {
     const ploi = new Ploi('tok', { rateLimitRetryIntervalMs: 40 });
 
-    // After a short delay, allow retries to succeed
     setTimeout(() => {
       allow = true;
     }, 80);
@@ -114,6 +160,8 @@ function sleep(ms) {
     globalThis.fetch = originalFetch;
   }
 }
+
+resetSharedAsyncPool();
 
 // --- Pool disabled: 429 throws immediately ---
 {

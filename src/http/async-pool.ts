@@ -16,8 +16,28 @@ function sleep(ms: number): Promise<void> {
 }
 
 /**
- * Reactive request pool: burst all pending work, on 429 retry that task
- * every `retryIntervalMs`, then resume bursting the rest.
+ * Process-wide shared pool — Ploi API rate limits are account-global,
+ * so every resource (servers, sites, docker, backups, …) must share one queue.
+ */
+let sharedPool: AsyncPool | null = null;
+
+export function getSharedAsyncPool(options: AsyncPoolOptions = {}): AsyncPool {
+  if (!sharedPool) {
+    sharedPool = new AsyncPool(options);
+  }
+  return sharedPool;
+}
+
+/** Test helper: drop the shared singleton. */
+export function resetSharedAsyncPool(): void {
+  sharedPool = null;
+}
+
+/**
+ * Reactive request pool for the entire Ploi API:
+ * burst all pending work → on 429 retry that task every `retryIntervalMs` → burst again.
+ *
+ * Not related to Laravel site queue workers (`sites().queues()`).
  */
 export class AsyncPool {
   private readonly retryIntervalMs: number;
@@ -40,6 +60,11 @@ export class AsyncPool {
     });
   }
 
+  /** Pending + in-flight count (for tests / diagnostics). */
+  get size(): number {
+    return this.pending.length + this.inFlight;
+  }
+
   private drain(): void {
     if (this.coolingDown) {
       return;
@@ -57,26 +82,27 @@ export class AsyncPool {
       const result = await task.run();
       task.resolve(result);
     } catch (error) {
-      if (error instanceof TooManyAttempts) {
+      if (isRateLimitError(error)) {
         await this.handleRateLimit(task);
         return;
       }
       task.reject(error);
     } finally {
       this.inFlight -= 1;
-      if (!this.coolingDown && this.pending.length > 0 && this.inFlight === 0) {
+      if (!this.coolingDown && this.pending.length > 0) {
         this.drain();
       }
     }
   }
 
   private async handleRateLimit(task: PoolTask<unknown>): Promise<void> {
+    // Another request is already probing the limit — re-queue and wait for next burst.
     if (this.coolingDown) {
-      // Another task is already being retried; keep this one for the next burst.
       this.pending.unshift(task);
       return;
     }
 
+    // Enter cooldown synchronously (before first await) so concurrent 429s see it.
     this.coolingDown = true;
 
     try {
@@ -87,7 +113,7 @@ export class AsyncPool {
           task.resolve(result);
           break;
         } catch (error) {
-          if (error instanceof TooManyAttempts) {
+          if (isRateLimitError(error)) {
             continue;
           }
           task.reject(error);
@@ -99,4 +125,16 @@ export class AsyncPool {
       this.drain();
     }
   }
+}
+
+function isRateLimitError(error: unknown): error is TooManyAttempts {
+  return (
+    error instanceof TooManyAttempts ||
+    (typeof error === 'object' &&
+      error !== null &&
+      (error as { name?: string; status?: number }).name === 'TooManyAttempts') ||
+    (typeof error === 'object' &&
+      error !== null &&
+      (error as { status?: number }).status === 429)
+  );
 }

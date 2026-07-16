@@ -20,9 +20,13 @@ Invalid/missing tokens typically surface as `Unauthenticated` (401).
 
 ## Rate limiting (429)
 
-With the default rate-limit pool enabled, `TooManyAttempts` is retried automatically every 1s until success, then the remaining queue bursts again. Disable with `rateLimitPool: false` to receive the exception immediately.
+The rate-limit pool is **global for the whole API** (not per resource). Docker, sites, servers, backups, etc. all share one queue via `makeAPICall`. Default pool is process-wide (`rateLimitPool: true`).
+
+On `TooManyAttempts`, that call is retried every 1s until success, then the remaining queue bursts again. Disable with `rateLimitPool: false` to receive the exception immediately. Use `rateLimitPool: 'instance'` for a private pool per `Ploi` client.
 
 `TooManyAttempts` exposes `retryAfter`, `rateLimitLimit`, and `rateLimitRemaining` from response headers when present.
+
+This is unrelated to Laravel site queue workers (`ploi.servers(id).sites(id).queues()`).
 
 ## HTTP exceptions
 

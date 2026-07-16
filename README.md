@@ -38,15 +38,26 @@ console.log(site.domain, site.phpVersion);
 await ploi.servers(1).sites(2).deployment().deploy();
 ```
 
-### Rate-limit pool
+### Rate-limit pool (global)
 
-By default every API call goes through a reactive pool: requests burst in parallel; on HTTP 429 the failed call is retried every 1s, then the remaining queue bursts again.
+**Every** `makeAPICall` goes through one reactive pool — servers, sites, docker, backups, scripts, … alike. This is **not** Laravel queue workers (`sites().queues()`).
+
+Default is a **process-wide shared** pool (Ploi’s limit is account-global). Requests burst in parallel; on HTTP 429 that call is retried every 1s, then the rest bursts again.
 
 ```ts
 new Ploi(token, {
-  rateLimitPool: true,              // default
-  rateLimitRetryIntervalMs: 1000,   // default
+  rateLimitPool: true,              // default: shared across all Ploi instances
+  // rateLimitPool: 'instance',     // private pool per client
+  // rateLimitPool: false,          // disable (429 throws)
+  rateLimitRetryIntervalMs: 1000,
 });
+
+// All of these share the same pool:
+await Promise.all([
+  ploi.servers().get(),
+  ploi.servers(1).docker().get(),
+  ploi.servers(1).sites().get(),
+]);
 ```
 
 ## Documentation
