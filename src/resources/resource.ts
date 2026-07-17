@@ -125,19 +125,7 @@ export abstract class Resource {
     searchQuery: string,
     factory?: ModelFactory<unknown>,
   ): Promise<ApiResponse<unknown>> {
-    const ploi = this.getPloi();
-    const endpoint = this.getEndpoint();
-
-    if (!ploi || !endpoint) {
-      throw new Error('Ploi instance or endpoint is not set.');
-    }
-
-    return ploi.makeAPICall(
-      `${endpoint}?search=${encodeURIComponent(searchQuery)}`,
-      'get',
-      {},
-      factory,
-    );
+    return this.fetchSearch(searchQuery, factory);
   }
 
   perPage(amountPerPage?: number | null): this {
@@ -150,19 +138,7 @@ export abstract class Resource {
     amountPerPage?: number | null,
     factory?: ModelFactory<unknown>,
   ): Promise<ApiResponse<unknown>> {
-    const ploi = this.getPloi();
-    const endpoint = this.getEndpoint();
-
-    if (!ploi || !endpoint) {
-      throw new Error('Ploi instance or endpoint is not set.');
-    }
-
-    return ploi.makeAPICall(
-      `${endpoint}${this.getPaginationQuery(pageNumber, amountPerPage)}`,
-      'get',
-      {},
-      factory,
-    );
+    return this.fetchPage(pageNumber, amountPerPage, factory);
   }
 
   protected getPaginationQuery(
@@ -191,18 +167,61 @@ export abstract class Resource {
     return this.getPloi()!.makeAPICall(url, method, options, factory);
   }
 
+  /** HTTP for page/pageModels — not overridable via page() (avoids recursion). */
+  protected fetchPage(
+    pageNumber = 1,
+    amountPerPage?: number | null,
+    factory?: ModelFactory<unknown>,
+  ): Promise<ApiResponse<unknown>> {
+    const ploi = this.getPloi();
+    const endpoint = this.getEndpoint();
+
+    if (!ploi || !endpoint) {
+      throw new Error('Ploi instance or endpoint is not set.');
+    }
+
+    return ploi.makeAPICall(
+      `${endpoint}${this.getPaginationQuery(pageNumber, amountPerPage)}`,
+      'get',
+      {},
+      factory,
+    );
+  }
+
+  /** HTTP for search/searchModels — same recursion constraint as fetchPage. */
+  protected fetchSearch(
+    searchQuery: string,
+    factory?: ModelFactory<unknown>,
+  ): Promise<ApiResponse<unknown>> {
+    const ploi = this.getPloi();
+    const endpoint = this.getEndpoint();
+
+    if (!ploi || !endpoint) {
+      throw new Error('Ploi instance or endpoint is not set.');
+    }
+
+    return ploi.makeAPICall(
+      `${endpoint}?search=${encodeURIComponent(searchQuery)}`,
+      'get',
+      {},
+      factory,
+    );
+  }
+
   protected pageModels<T>(
     factory: ModelFactory<T>,
     pageNumber = 1,
     amountPerPage?: number | null,
   ): Promise<ApiResponse<T>> {
-    return this.page(pageNumber, amountPerPage, factory) as Promise<ApiResponse<T>>;
+    return this.fetchPage(pageNumber, amountPerPage, factory) as Promise<
+      ApiResponse<T>
+    >;
   }
 
   protected searchModels<T>(
     searchQuery: string,
     factory: ModelFactory<T>,
   ): Promise<ApiResponse<T>> {
-    return this.search(searchQuery, factory) as Promise<ApiResponse<T>>;
+    return this.fetchSearch(searchQuery, factory) as Promise<ApiResponse<T>>;
   }
 }
